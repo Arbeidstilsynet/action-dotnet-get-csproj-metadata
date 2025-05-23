@@ -1,4 +1,5 @@
 name: "Get Package Name and Version"
+author: "Arbeidstilsynet"
 description: "Extracts the package name and version from a .csproj file in the given path"
 
 inputs:
