@@ -10,16 +10,16 @@ Action to extract the package name and version from csproj
 
 ## Inputs
 
-| Name                | Description                              | Required | Default |
-|---------------------|------------------------------------------|----------|---------|
-| `working-directory` | The path to the project directory        | Yes      |         |
+| Name                | Description                       | Required | Default |
+|---------------------|-----------------------------------|----------|---------|
+| `working-directory` | The path to the project directory | Yes      |         |
 
 ## Outputs
 
-| Name     | Description             |
-|----------|-------------------------|
-| `name`   | The package name        |
-| `version`| The package version     |
+| Name      | Description         |
+|-----------|---------------------|
+| `name`    | The package name    |
+| `version` | The package version |
 
 ## Usage
 
