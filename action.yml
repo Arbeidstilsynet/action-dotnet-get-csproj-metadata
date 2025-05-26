@@ -1,0 +1,39 @@
+name: "Get Package Name and Version"
+author: "Arbeidstilsynet"
+description: "Extracts the package name and version from a .csproj file in the given path"
+
+inputs:
+  working-directory:
+    description: "The path to the project directory"
+    required: true
+outputs:
+  name:
+    description: "The package name"
+    value: ${{ steps.get_metadata.outputs.name }}
+  version:
+    description: "The package version"
+    value: ${{ steps.get_metadata.outputs.version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get package name and version from .csproj
+      id: get_metadata
+      shell: bash
+      run: |
+        CSPROJ=$(find "${{ inputs.working-directory }}" -maxdepth 1 -name '*.csproj' | head -n 1)
+        if [ -z "$CSPROJ" ]; then
+          echo "No .csproj found in ${{ inputs.working-directory }}" >&2
+          exit 1
+        fi
+        NAME=$(grep -m1 '<PackageId>' "$CSPROJ" | sed -E 's/.*<PackageId>(.*)<\/PackageId>.*/\1/')
+        if [ -z "$NAME" ]; then
+          NAME=$(grep -m1 '<AssemblyName>' "$CSPROJ" | sed -E 's/.*<AssemblyName>(.*)<\/AssemblyName>.*/\1/')
+        fi
+        VERSION=$(grep -m1 '<Version>' "$CSPROJ" | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')
+        if [ -z "$NAME" ] || [ -z "$VERSION" ]; then
+          echo "Could not determine package name or version" >&2
+          exit 1
+        fi
+        echo "name=$NAME" >> $GITHUB_OUTPUT
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
