@@ -40,3 +40,9 @@ jobs:
           echo "Package name: ${{ steps.csproj-metadata.outputs.name }}"
           echo "Package version: ${{ steps.csproj-metadata.outputs.version }}"
 ```
+
+## Versioning
+
+This repository uses a simple versioning system based on the `VERSION` file.
+When you update the `VERSION` file and push to `main`, a Git tag with that version is created or updated automatically by the workflow.
+If you make breaking changes to the action, bump the version and update `CHANGELOG.md`.
